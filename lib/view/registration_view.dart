@@ -1,5 +1,7 @@
 import 'package:chatapp/components/rounded_button.dart';
 import 'package:chatapp/constants.dart';
+import 'package:chatapp/view/chat_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationView extends StatefulWidget {
@@ -10,6 +12,11 @@ class RegistrationView extends StatefulWidget {
 }
 
 class _RegistrationViewState extends State<RegistrationView> {
+  final _auth = FirebaseAuth.instance;
+
+  String email;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +38,10 @@ class _RegistrationViewState extends State<RegistrationView> {
               height: 48.0,
             ),
             TextField(
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
                 onChanged: (value) {
-                  // Do Something with the user input.
+                  email = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter your Email')),
@@ -40,8 +49,10 @@ class _RegistrationViewState extends State<RegistrationView> {
               height: 8.0,
             ),
             TextField(
+              textAlign: TextAlign.center,
+              obscureText: true,
               onChanged: (value) {
-                //Do something with the user input.
+                password = value;
               },
               decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Enter your Password'),
@@ -52,7 +63,19 @@ class _RegistrationViewState extends State<RegistrationView> {
             RoundedButton(
               title: 'Register',
               color: Colors.blueAccent,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  final newUser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+
+                  if (newUser != null) {
+                    Navigator.pushNamed(context, ChatView.id);
+                  }
+
+                } catch (e) {
+                  print(e);
+                }
+              },
             ),
           ],
         ),
