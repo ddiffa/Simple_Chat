@@ -40,10 +40,11 @@ class _ChatViewState extends State<ChatView> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                //Implement logout functionality
+                _auth.signOut();
+                Navigator.pop(context);
               }),
         ],
-        title: Text('⚡️Chat'),
+        title: Text('Chat Room'),
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: SafeArea(
