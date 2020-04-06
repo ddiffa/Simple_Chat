@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "731427993552",
+    "firebase_url": "https://chat-app-b4375.firebaseio.com",
+    "project_id": "chat-app-b4375",
+    "storage_bucket": "chat-app-b4375.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731427993552:android:f54d958d70ef6f0bb3abd5",
+        "android_client_info": {
+          "package_name": "com.codingwithdiffa.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731427993552-gt5qs5p3icd3rhl6jajmlj1bvh341cu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5wo4UXUNlIFqOQKv79K3CoRVtMmxymaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731427993552-gt5qs5p3icd3rhl6jajmlj1bvh341cu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
