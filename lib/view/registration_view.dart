@@ -14,10 +14,20 @@ class RegistrationView extends StatefulWidget {
 
 class _RegistrationViewState extends State<RegistrationView> {
   final _auth = FirebaseAuth.instance;
+  final emailTextController = TextEditingController();
+  final pwTextController = TextEditingController();
 
   bool showSpinner = false;
   String email;
   String password;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      showSpinner = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +56,7 @@ class _RegistrationViewState extends State<RegistrationView> {
               TextField(
                   keyboardType: TextInputType.emailAddress,
                   textAlign: TextAlign.center,
+                  controller: emailTextController,
                   onChanged: (value) {
                     email = value;
                   },
@@ -57,6 +68,7 @@ class _RegistrationViewState extends State<RegistrationView> {
               TextField(
                 textAlign: TextAlign.center,
                 obscureText: true,
+                controller: pwTextController,
                 onChanged: (value) {
                   password = value;
                 },
@@ -80,6 +92,8 @@ class _RegistrationViewState extends State<RegistrationView> {
 
                     if (newUser != null) {
                       Navigator.pushNamed(context, ChatView.id);
+                      pwTextController.clear();
+                      emailTextController.clear();
                     }
 
                     setState(() {

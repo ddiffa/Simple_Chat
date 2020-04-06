@@ -80,8 +80,11 @@ class _ChatViewState extends State<ChatView> {
                   FlatButton(
                     onPressed: () {
                       messageTextController.clear();
-                      _firestore.collection('messages').add(
-                          {'text': messageText, 'sender': loggedInUser.email});
+                      _firestore.collection('messages').add({
+                        'time': currentTime(),
+                        'text': messageText,
+                        'sender': loggedInUser.email
+                      });
                     },
                     child: Text(
                       'Send',
@@ -103,7 +106,7 @@ class MessagesStream extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream: _firestore.collection('messages').orderBy("time").snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           Center(
@@ -113,16 +116,18 @@ class MessagesStream extends StatelessWidget {
           );
         }
         final messages = snapshot.data.documents.reversed;
+
         List<MessageBubble> messageBubbles = [];
         for (var message in messages) {
           final messageText = message.data['text'];
           final messageSender = message.data['sender'];
-
+          final messageTime = message.data['time'];
           final currentUser = loggedInUser.email;
 
           final messageBubble = MessageBubble(
             sender: messageSender,
             text: messageText,
+            time: convertTime(messageTime),
             isMe: currentUser == messageSender,
           );
 
@@ -141,10 +146,11 @@ class MessagesStream extends StatelessWidget {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({this.sender, this.text, this.isMe});
+  MessageBubble({this.sender, this.text, this.time, this.isMe});
 
   final String text;
   final String sender;
+  final String time;
   final bool isMe;
 
   @override
@@ -158,35 +164,84 @@ class MessageBubble extends StatelessWidget {
             Padding(
               padding: isMe
                   ? EdgeInsets.symmetric(vertical: 5.0)
-                  : EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  : EdgeInsets.symmetric(vertical: 5.0, horizontal: 3.0),
               child: Text(
                 sender,
                 style: TextStyle(fontSize: 12.0, color: Colors.black54),
               ),
             ),
-            Material(
-              elevation: 5.0,
-              borderRadius: isMe
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      bottomLeft: Radius.circular(30.0),
-                      bottomRight: Radius.circular(30.0))
-                  : BorderRadius.only(
-                      bottomLeft: Radius.circular(30.0),
-                      bottomRight: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0)),
-              color: isMe ? Colors.lightBlueAccent : Colors.white,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                child: Text(
-                  '$text',
-                  style: TextStyle(
-                      color: isMe ? Colors.white : Colors.black54,
-                      fontSize: 15.0),
-                ),
-              ),
+            Row(
+              mainAxisAlignment:
+                  isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              children: isMe
+                  ? <Widget>[
+                      //True
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.0),
+                        child: Text(
+                          time,
+                          style: TextStyle(color: Colors.black, fontSize: 10.0),
+                        ),
+                      ),
+                      Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30.0),
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0)),
+                        color: Colors.lightBlueAccent,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            '$text',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
+                          ),
+                        ),
+                      ),
+                    ]
+                  : <Widget>[
+                      Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30.0),
+                            bottomRight: Radius.circular(30.0),
+                            topRight: Radius.circular(30.0)),
+                        color: Colors.white,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          child: Text(
+                            '$text',
+                            style: TextStyle(
+                                color: Colors.black54, fontSize: 15.0),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.0),
+                        child: Text(
+                          time,
+                          style: TextStyle(color: Colors.black, fontSize: 10.0),
+                        ),
+                      ),
+                    ],
             ),
           ]),
     );
   }
+}
+
+String convertTime(String time) {
+  var date = time.split(" ");
+  var times = date[1].split(":");
+
+  var hour = times[0];
+  var minute = times[1];
+  return "$hour:$minute";
+}
+
+String currentTime() {
+  return (new DateTime.now()).toString();
 }

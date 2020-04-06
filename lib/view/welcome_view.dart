@@ -66,7 +66,6 @@ class _WelcomeScreenState extends State<WelcomeView>
                       fontWeight: FontWeight.w900,
                       fontFamily: "Agne",
                       color: Colors.black87),
-                  isRepeatingAnimation: false,
                   speed: Duration(seconds: 1),
                   textAlign: TextAlign.start,
                   alignment: AlignmentDirectional.topStart,
