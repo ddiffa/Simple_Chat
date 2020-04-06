@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chatapp/constants.dart';
 
 class ChatView extends StatefulWidget {
-  static String id = 'chat_view';
+  static const String id = 'chat_view';
   @override
   _ChatViewState createState() => _ChatViewState();
 }

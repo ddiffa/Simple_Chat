@@ -1,7 +1,9 @@
+import 'package:chatapp/view/login_view.dart';
+import 'package:chatapp/view/registration_view.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeView extends StatefulWidget {
-  static String id = 'welcome_view';
+  static const String id = 'welcome_view';
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -27,9 +29,12 @@ class _WelcomeScreenState extends State<WelcomeView> {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-                Container(
-                  child: Image.asset('images/logo.png'),
-                  height: 50.0,
+                Hero(
+                  tag: 'logo',
+                  child: Container(
+                    child: Image.asset('images/logo.png'),
+                    height: 50.0,
+                  ),
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeView> {
                 borderRadius: BorderRadius.circular(30.0),
                 child: MaterialButton(
                   onPressed: () {
-                    // Go to login screen
+                    Navigator.pushNamed(context, LoginView.id);
                   },
                   minWidth: 200.0,
                   height: 42.0,
@@ -61,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeView> {
                 elevation: 5.0,
                 child: MaterialButton(
                   onPressed: () {
-                    //Go to registration screen
+                    Navigator.pushNamed(context, RegistrationView.id);
                   },
                   minWidth: 200.0,
                   height: 42.0,

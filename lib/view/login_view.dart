@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
-  static String id = 'login_view';
+  static const String id = 'login_view';
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -17,9 +17,12 @@ class _LoginScreenState extends State<LoginView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: 200.0,
-              child: Image.asset('images/logo.png'),
+            Hero(
+              tag: 'logo',
+              child: Container(
+                height: 200.0,
+                child: Image.asset('images/logo.png'),
+              ),
             ),
             SizedBox(
               height: 48.0,
